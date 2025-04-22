@@ -15,6 +15,7 @@ const { sendOtp, verifyOtp } = require('../controllers/otpController');
 const { createCampaign, getCampaign, allCampaigns, updateCampaignWithCoupons, deleteCampaign, getCampaignCode, fetchCampaignInteractions } = require('../controllers/couponController');
 const { default: axios } = require('axios');
 const { fetchAllSeries, updateSeries, fetchUpcomingMatchesCricB } = require('../controllers/cricketController');
+const { add } = require('date-fns/add');
 router.post('/device/register', registerDevice) // takes group id and location input 
 
 
@@ -110,9 +111,9 @@ router.get('/campaign/get/:campaign_id', validateToken, getCampaign)
 
 router.get('/campaign/:campaign_id', getCampaignCode)
 
-
-router.post('/user/add', validateToken,  addUser)
-router.get('/user/data', validateToken,  getUserData)
+router.post('/users/add', validateToken, addUser)
+router.get('/users/all', validateToken,  getUserData)
+router.get('/users/clients', validateToken,  getAllClients)
 
 router.get('/trigger',  async(req, res)=>{
     try {

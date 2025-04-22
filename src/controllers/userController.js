@@ -21,6 +21,7 @@ module.exports.addUser = async (req, res) => {
       });
 
     res.json({ message: "User created successfully." });
+  
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -29,12 +30,25 @@ module.exports.addUser = async (req, res) => {
 
 module.exports.getUserData = async (req, res) => {
   try {
-    const {user_id} = req.user;
-    const user  = await User.findOne({attributes:['name', 'email', 'role'], where:{
-      user_id
-    }})
+    const users = await User.findAll({
+      attributes: ['user_id', 'name', 'email', 'role', 'client_id'], 
+    });
 
-    res.json({user});
+    res.json({ users }); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
+module.exports.getClients = async (req, res) => {
+  try {
+    const clients = await User.findAll({
+      where: { role: 'client' },
+      attributes: [['user_id', 'client_id'], 'name'] 
+    });
+    res.json({ clients });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
